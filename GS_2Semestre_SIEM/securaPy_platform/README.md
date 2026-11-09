@@ -14,17 +14,41 @@ desenvolvida para a Global Solution da FIAP.
 
 ## Estrutura
 
-- core/ — Coleta, regras, detecção e relatórios
-- db/ — Integração com bancos de dados (pendente)
-- ml/ — Machine Learning (pendente)
-- api/ — API REST, autenticação e segurança web
-- ia/ — VIX, análise factual e integração LLM
-- web/react/ — Dashboard e interface visual
-- alertas/ — Servidor e cliente TCP
-- logs/ — Logs de demonstração
-- config/ — Regras de segurança
-- testes/ — Testes automatizados
-- scripts/ — Inicialização e verificações
+securaPy_platform/
+├── core/                          
+│   ├── coletor.py                
+│   ├── regras.py                  
+│   ├── detector.py              
+│   └── enriquecimento.py          
+│
+├── db/                            
+│   ├── mongo_repo.py             
+│   └── mysql_repo.py            
+│
+├── ml/                            
+│   ├── treinar.py                
+│   ├── modelo.pkl                
+│   └── classificar.py             
+│
+├── api/                          
+│   ├── app.py                     
+│   └── auth.py                    
+│
+├── ia/                           
+│   └── assistente.py              
+│
+├── web/                          
+│   └── templates/                 
+├── alertas/                       
+│   ├── servidor_alertas.py       
+│   └── cliente_alertas.py         
+│
+├── logs/                          
+├── config/regras.json             
+├── Dockerfile                     
+├── docker-compose.yml            
+├── requirements.txt
+└── README.md                     
 
 ## Requisitos
 
