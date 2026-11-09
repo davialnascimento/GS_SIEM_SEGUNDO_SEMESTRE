@@ -284,7 +284,7 @@ Projeto acadêmico FIAP, desenvolvido em grupo:
 | Amanda Souza Bezerra | 573911 |
 | Caique dos Santos Rodrigues | 570577 |
 | Davi Almeida Nascimento | 569447 |
-| Maick Rosario Yamassaki | 569664 |
+| Gabriel de Oliveira Gomes | 569695 |
 
 O **SecuraPy** é a base original do projeto. **VioTrace** é a identidade e interface ampliada desta evolução. A distribuição final de módulos deve ser confirmada pelo grupo antes da submissão.
 
