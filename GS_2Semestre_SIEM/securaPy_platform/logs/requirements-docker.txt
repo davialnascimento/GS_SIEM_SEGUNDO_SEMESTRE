@@ -1,0 +1,8 @@
+# Dependências reais da API Flask (o requirements.txt original lista FastAPI,
+# mas api/app.py e api/auth.py usam Flask + PyMongo + MySQL).
+flask>=3.0,<4
+werkzeug>=3.0,<4
+pymongo>=4.6,<5
+mysql-connector-python>=8.4,<10
+requests>=2.31,<3
+gunicorn>=22,<24

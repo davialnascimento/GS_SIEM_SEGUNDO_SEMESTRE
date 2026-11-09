@@ -1,0 +1,74 @@
+# Plataforma SecuraPy: API + MongoDB + MySQL com UM comando:
+#   docker compose up --build -d
+# Os valores ${VAR:-padrão} permitem subir sem .env (apenas para laboratório).
+
+name: securapy
+
+services:
+  api:
+    build: .
+    container_name: securapy_api
+    restart: unless-stopped
+    ports:
+      - "${API_PORT:-5000}:5000"
+    environment:
+      # O host é o NOME DO SERVIÇO (DNS interno da rede do compose), nunca localhost
+      MONGO_URI: mongodb://mongo:27017
+      MYSQL_HOST: mysql
+      MYSQL_PORT: "3306"
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-securapy}
+      MYSQL_USER: ${MYSQL_USER:-securapy}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-securapy_pw}
+    depends_on:
+      mongo:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+    networks:
+      - securapy-net
+
+  mongo:
+    image: mongo:7
+    container_name: securapy_mongo
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    networks:
+      - securapy-net
+
+  mysql:
+    image: mysql:8.0
+    container_name: securapy_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_pw}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-securapy}
+      MYSQL_USER: ${MYSQL_USER:-securapy}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-securapy_pw}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      # 127.0.0.1 (TCP): o servidor temporário de init só escuta no socket,
+      # então o healthcheck só passa quando o MySQL definitivo está no ar.
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    networks:
+      - securapy-net
+
+networks:
+  securapy-net:
+    driver: bridge
+
+volumes:
+  mongo_data:
+  mysql_data:
